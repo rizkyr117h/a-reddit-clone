@@ -49,21 +49,6 @@ pipeline {
                 sh 'trivy fs . > trivyfs.txt'
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
-                }
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
-                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
-                    }
-                }
-            }
-        }
+
     }
 }
