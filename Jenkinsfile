@@ -12,6 +12,7 @@ pipeline {
         DOCKER_PASS = credentials('dockerhub') // Use Jenkins credentials store
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+        JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
     stages {
         stage('Clean Workspace') {
@@ -81,6 +82,14 @@ pipeline {
             }
         }
     }
+	 stage("Trigger CD Pipeline") {
+            steps {
+                script {
+                    sh "curl -v -k --user rizkyr117h:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-13-201-88-26.ap-south-1.compute.amazonaws.com:8080/job/Reddit-Clone-CD/buildWithParameters?token=gitops-token'"
+                }
+            }
+         }
+     }    
     post {
         always {
             emailext attachLog: true,
