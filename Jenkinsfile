@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/Ashfaque-9x/a-reddit-clone.git'
+                git branch: 'main', url: 'https://github.com/rizkyr117h/a-reddit-clone.git'
             }
         }
         stage('Sonarqube Analysis') {
@@ -41,7 +41,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm clean-install'
+                sh 'npm install'
             }
         }
         stage('TRIVY FS Scan') {
